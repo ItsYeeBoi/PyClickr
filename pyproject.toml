@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyclickr"
+version = "0.0.0"
+description = "A fast, hotkey-driven autoclicker made with Python."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{ name = "ItsYeeBoi" }]
+dependencies = [
+  "pynput",
+  "dearpygui",
+]
+
+[tool.semantic_release]
+allow_zero_version = true
+version_variable = "src/pyclickr/__init__.py:__version__"
+branch = "main"
+upload_to_pypi = false
+upload_to_release = true
+build_command = ""
+changelog_file = "CHANGELOG.md"
+commit_parser = "semantic_release.history.angular_commits"
+
+[tool.semantic_release.remote]
+name = "origin"
+type = "github"
