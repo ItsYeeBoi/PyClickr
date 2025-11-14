@@ -5,7 +5,7 @@ a = Analysis(
     ['src\\pyclickr\\app.py'],
     pathex=[],
     binaries=[],
-    datas=[('assets\\PyClickr_Icon.ico', 'assets'), ('assets\\settings.json', 'assets')],
+    datas=[('assets\\PyClickr.ico', 'assets'), ('assets\\settings.json', 'assets')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -35,5 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['assets\\PyClickr_Icon.ico'],
+    icon=['assets\\PyClickr.ico'],
 )
