@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v0.1.4 (2025-11-14)
+
+### Bug Fixes
+
+- **icon**: Remove double
+  ([`c059031`](https://github.com/ItsYeeBoi/PyClickr/commit/c0590316f050582d7fa3c00bf4e13dab3e2d4293))
+
+### Chores
+
+- **config**: Change parser
+  ([`b5682b5`](https://github.com/ItsYeeBoi/PyClickr/commit/b5682b5e78a0aaa9a97a24ea62d0a547294ed787))
+
+
 ## v0.1.3 (2025-11-14)
 
 
