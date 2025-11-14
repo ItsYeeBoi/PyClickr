@@ -153,7 +153,6 @@ class App:
         listener.start()
 
     def setup_gui(self):
-        self.icon_path = self.resource_path(r"assets\PyClickr_Icon.ico")
         self.icon_path = self.resource_path(r"assets\PyClickr.ico")
         dpg.create_context()
 
