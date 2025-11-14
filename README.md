@@ -21,7 +21,7 @@ A fast, hotkey-driven autoclicker built with **Python**, **DearPyGui**, and **py
 ## Downloads
 
 Grab the latest Windows build from **GitHub Releases**:
-[**➡️ Releases page**](https://github.com/ItsYeeBoi/PyClickr/releases)
+[**Releases page**](https://github.com/ItsYeeBoi/PyClickr/releases)
 
 > Want to build it yourself instead? See **Build from source** below.
 
@@ -45,6 +45,8 @@ pip install -r requirements.txt
 python -m src.pyclickr.app
 ```
 
+> Note: Not tested on macOS/Linux; may require tweaks.
+
 ---
 
 ## Usage
@@ -63,13 +65,13 @@ python -m src.pyclickr.app
 - **Settings file**: `settings.json`  
   - **Windows:** `%APPDATA%\pyclickr\settings.json` (e.g., `C:\Users\<user>\AppData\Roaming\pyclickr\settings.json`)
   - Cross-platform support is not tested
-- Typical keys: `cps`, `tart_stop_key`.
+- Typical keys: `cps`, `start_stop_key`.
 
 Settings are created on first run. Corrupt/missing files fall back to sane defaults.
 
 ---
 
-## Build an .exe (PyInstaller)
+## Build from source (PyInstaller)
 
 With the spec file (recommended):
 
@@ -125,17 +127,27 @@ A GitHub Action parses commit messages on pushes to `main`, bumps the version, t
 
 Project structure:
 
-```
-src/pyclickr/
-  __init__.py        # __author__, __title__, __version__, __license__
-  app.py             # DearPyGui + pynput app
-assets/
-  PyClickr.ico       # app icon for Windows build
-  settings.json     # default settings (copied to user config on first run)
-pyclickr.spec        # PyInstaller spec
-pyproject.toml       # project & semantic-release config
-requirements.txt
-.github/workflows/   # release + build pipelines
+```text
+PyClickr/
+├─ .github/
+│  ├─ workflows/
+│  │  ├─ release.yml
+├─ assets/
+│  ├─ PyClickr.ico
+│  ├─ PyClickr.png
+│  ├─ settings.json
+├─ src/
+│  ├─ pyclickr/
+│  │  ├─ __init__.py
+│  │  ├─ app.py
+├─ .gitattributes
+├─ .gitignore
+├─ CHANGELOG.md
+├─ LICENSE
+├─ PyClickr.spec
+├─ README.md
+├─ pyproject.toml
+├─ requirements.txt
 ```
 
 ---
