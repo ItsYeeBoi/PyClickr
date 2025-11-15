@@ -34,7 +34,16 @@ class App:
         try:
             self.start_stop_key = Key[start_stop_name]
         except KeyError:
-            self.start_stop_key = Key.f6
+            self.start_stop_key = start_stop_name
+        self.holding = self.settings.get("hold_mouse_button", False)
+        button_name = self.settings.get("selected_button", "Left")
+        self.button_map = {
+            "Left": Button.left,
+            "Right": Button.right,
+            "Middle": Button.middle,
+        }
+        self.selected_button = self.button_map.get(button_name, Button.left)
+        print(self.selected_button)
 
         # Window Size
         self.window_width = 400
@@ -109,6 +118,8 @@ class App:
             defaults = {
                 "cps": self.cps,
                 "start_stop_key": self.start_stop_key.name,
+                "hold_mouse_button": self.holding,
+                "selected_button": self.selected_button.name,
             }
 
         with user_settings_path.open("w", encoding="utf-8") as f:
@@ -121,21 +132,69 @@ class App:
         Save user settings to a JSON file.
         """
         user_settings_path = self.get_user_settings_path()
-        settings = {"cps": int(self.cps), "start_stop_key": self.start_stop_key.name}
+        settings = {
+            "cps": int(self.cps),
+            "start_stop_key": self.start_stop_key.name,
+            "hold_mouse_button": dpg.get_value("hold_mouse_button"),
+            "selected_button": dpg.get_value("button_listbox"),
+        }
         with user_settings_path.open("w", encoding="utf-8") as f:
             json.dump(settings, f, indent=4)
 
-    def update_cps(self, sender, app_data):
+    def get_options(self, sender, app_data):
+        """
+        Handle changes in user options from the GUI.
+
+        :param sender: The identifier of the GUI element that triggered the change.
+        :param app_data: The new value or data from the GUI element.
+        """
         try:
-            self.cps = int(app_data)
-            self.click_interval = 1.0 / self.cps
+            if sender == "hotkey_text":
+                try:
+                    self.start_stop_key = Key[app_data]
+                except KeyError:
+                    self.start_stop_key = app_data
+            elif sender == "cps_slider":
+                self.cps = int(app_data)
+                self.click_interval = 1.0 / self.cps
+            elif sender == "hold_mouse_button":
+                self.holding = dpg.get_value("hold_mouse_button")
+            elif sender == "button_listbox":
+                self.selected_button = self.button_map.get(app_data, Button.left)
         except Exception:
             pass
 
     def click_loop(self):
-        while self.clicking:
-            self.mouse.click(Button.left)
-            sleep(self.click_interval)
+        """
+        Click loop that handles mouse clicking based on user settings.
+        """
+        pressed = False
+        try:
+            while self.clicking:
+                if self.holding:
+                    if not pressed:
+                        dpg.set_value("status_text", "Holding")
+                        self.mouse.press(self.selected_button)
+                        pressed = True
+                else:
+                    if pressed:
+                        try:
+                            dpg.set_value("status_text", "Releasing")
+                            self.mouse.release(self.selected_button)
+                        except Exception:
+                            pass
+                    pressed = False
+                    dpg.set_value("status_text", "Clicking")
+                    self.mouse.click(self.selected_button)
+                sleep(self.click_interval)
+        finally:
+            if self.holding:
+                try:
+                    dpg.set_value("status_text", "Releasing")
+                    self.mouse.release(self.selected_button)
+                except Exception:
+                    pass
+            dpg.set_value("status_text", "Idle")
 
     def toggle_clicking(self):
         """
@@ -228,15 +287,37 @@ class App:
                 )
                 dpg.bind_item_theme("hotkey_text", "fake_button_theme")
                 dpg.add_button(label="Change Hotkey", callback=self.change_hotkey)
-            dpg.add_slider_int(
-                label="CPS",
-                default_value=self.cps,
-                min_value=1,
-                max_value=1000,
-                width=90,
-                clamped=True,
-                callback=self.update_cps,
-            )
+            with dpg.group(horizontal=True):
+                dpg.add_text("CPS:")
+                dpg.add_slider_int(
+                    tag="cps_slider",
+                    # label="CPS",
+                    default_value=self.cps,
+                    min_value=1,
+                    max_value=1000,
+                    width=100,
+                    clamped=True,
+                    callback=self.get_options,
+                )
+            # dpg.add_spacer(height=20)
+            with dpg.group(horizontal=True):
+                dpg.add_combo(
+                    tag="button_listbox",
+                    label="Mouse Button",
+                    items=list(self.button_map.keys()),
+                    default_value=self.selected_button.name.capitalize(),
+                    callback=self.get_options,
+                    fit_width=True,
+                )
+                dpg.add_checkbox(
+                    tag="hold_mouse_button",
+                    label="Hold Mouse Button",
+                    default_value=self.holding,
+                    callback=self.get_options,
+                )
+            with dpg.group(horizontal=True):
+                dpg.add_text("Status:")
+                dpg.add_text("Idle", tag="status_text")
             with dpg.group(horizontal=True):
                 dpg.add_text(f"version {__version__}")
                 dpg.add_spacer(width=20)

@@ -1,4 +1,6 @@
 {
     "cps": 10,
-    "start_stop_key": "f6"
+    "start_stop_key": "f6",
+    "hold_mouse_button": false,
+    "selected_button": "Left"
 }
