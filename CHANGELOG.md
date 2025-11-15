@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v0.2.1 (2025-11-15)
+
+### Bug Fixes
+
+- Remove accidental debug print
+  ([`db13af1`](https://github.com/ItsYeeBoi/PyClickr/commit/db13af1a428c7990918263063c282d6a6ffd1e6f))
+
+### Documentation
+
+- **readme**: Reflect hold mode and mouse button selection
+  ([`7db903e`](https://github.com/ItsYeeBoi/PyClickr/commit/7db903e84f2c15633678f70e84747140af1f0cfe))
+
+
 ## v0.2.0 (2025-11-15)
 
 ### Chores
