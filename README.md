@@ -9,7 +9,8 @@ A fast, hotkey-driven autoclicker built with **Python**, **DearPyGui**, and **py
 ## Features
 
 - Global hotkeys (start/stop) that work outside the app window
-- Click spam
+- Click spam/Hold mouse button modes
+- Left / Right / Middle mouse button selection
 - Adjustable interval (CPS/seconds)
 - In-app hotkey remapping
 - Settings saved to user config folder
@@ -65,7 +66,7 @@ python -m src.pyclickr.app
 - **Settings file**: `settings.json`  
   - **Windows:** `%APPDATA%\pyclickr\settings.json` (e.g., `C:\Users\<user>\AppData\Roaming\pyclickr\settings.json`)
   - Cross-platform support is not tested
-- Typical keys: `cps`, `start_stop_key`.
+- Typical keys: `cps`, `start_stop_key`, `hold_mouse_button`, `selected_button`.
 
 Settings are created on first run. Corrupt/missing files fall back to sane defaults.
 
@@ -103,8 +104,6 @@ A GitHub Action parses commit messages on pushes to `main`, bumps the version, t
 
 ## Roadmap (ideas)
 
-- Hold mouse button instead of click spam
-- Right-click / middle-click modes
 - Click at fixed coordinates / cursor position toggle
 - GUI themes (light/dark)
 - Per-OS packaging (macOS app bundle, Linux AppImage)
