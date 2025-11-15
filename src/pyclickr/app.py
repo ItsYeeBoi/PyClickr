@@ -2,7 +2,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from threading import Event, Thread
+from threading import Thread
 from time import sleep
 
 from dearpygui import dearpygui as dpg
@@ -15,10 +15,9 @@ try:
 except ImportError:
     from . import __author__, __title__, __version__
 
-running = Event()
-
 
 class App:
+
     def __init__(self):
         self.mouse = Controller()
         self.clicking = False
@@ -38,7 +37,7 @@ class App:
             self.start_stop_key = Key.f6
 
         # Window Size
-        self.window_width = 600
+        self.window_width = 400
         self.window_height = 300
 
         # Setup
@@ -180,9 +179,14 @@ class App:
             :param key: The key that was pressed.
             """
             self.start_stop_key = key
-            dpg.configure_item(
-                "hotkey_text", label=f"Current Hotkey: {self.start_stop_key.name}"
-            )
+            try:
+                dpg.configure_item(
+                    "hotkey_text", label=f"Hotkey: {self.start_stop_key.name}"
+                )
+            except Exception:
+                dpg.configure_item(
+                    "hotkey_text", label=f"Hotkey: {self.start_stop_key}"
+                )
             listener.stop()
 
         listener = keyboard.Listener(on_press=on_key_press)
@@ -219,7 +223,7 @@ class App:
         ):
             with dpg.group(horizontal=True):
                 dpg.add_button(
-                    label=f"Current Hotkey: {self.start_stop_key.name}",
+                    label=f"Hotkey: {self.start_stop_key.name}",
                     tag="hotkey_text",
                 )
                 dpg.bind_item_theme("hotkey_text", "fake_button_theme")
