@@ -24,7 +24,7 @@ A fast, hotkey-driven autoclicker built with **Python**, **DearPyGui**, and **py
 Grab the latest Windows build from **GitHub Releases**:
 [**Releases page**](https://github.com/ItsYeeBoi/PyClickr/releases)
 
-> Want to build it yourself instead? See **Build from source** below.
+> Want to build it yourself instead? See [**Build from source**](#build-from-source-pyinstaller) below.
 
 ---
 
