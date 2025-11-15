@@ -2,5 +2,5 @@
 
 __author__ = "ItsYeeBoi"
 __title__ = "PyClickr"
-__version__ = "0.1.4"
+__version__ = "0.2.0"
 __license__ = "MIT"

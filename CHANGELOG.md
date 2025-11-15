@@ -2,6 +2,29 @@
 
 <!-- version list -->
 
+## v0.2.0 (2025-11-15)
+
+### Chores
+
+- Update readme
+  ([`58cfb91`](https://github.com/ItsYeeBoi/PyClickr/commit/58cfb9181b271018f944a09c8115b8bdf78cebe8))
+
+### Documentation
+
+- **app**: Add function docstrings
+  ([`a8a8157`](https://github.com/ItsYeeBoi/PyClickr/commit/a8a8157cfc501ec04cefa2fdc14ae1e3e8091c21))
+
+### Features
+
+- Support hold mouse and selected button
+  ([`b276e56`](https://github.com/ItsYeeBoi/PyClickr/commit/b276e566cd240e4bac74479dcf22de6b8df7f7b7))
+
+### Refactoring
+
+- **app**: Remove dead code
+  ([`496a911`](https://github.com/ItsYeeBoi/PyClickr/commit/496a911041527357834b87c7111962baacfb2af1))
+
+
 ## v0.1.4 (2025-11-14)
 
 ### Bug Fixes
