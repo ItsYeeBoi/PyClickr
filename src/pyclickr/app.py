@@ -28,6 +28,7 @@ class App:
         self.settings_file = "settings.json"
         self.settings = self.load_settings()
 
+        # User Settings
         self.cps = int(self.settings.get("cps", 10))
         self.click_interval = 1.0 / self.cps
         start_stop_name = self.settings.get("start_stop_key", "f6")
@@ -46,6 +47,12 @@ class App:
 
     @staticmethod
     def resource_path(relative_path):
+        """
+        Get the absolute path to a resource, works for development and for PyInstaller.
+
+        :param relative_path: Relative path to the resource.
+        :return: Absolute path to the resource.
+        """
         meipass = getattr(sys, "_MEIPASS", None)
 
         if meipass is not None:
@@ -63,8 +70,8 @@ class App:
         - macOS:   ~/Library/Application Support/PyClickr/settings.json
         """
         """
-        Only tested on Windows
-        Create PR/issue if you test on other OS and it doesn't work
+        Only tested on Windows.
+        Create PR/issue if you test on other OS and it doesn't work.
         """
 
         if os.name == "nt":
@@ -79,6 +86,11 @@ class App:
         return config_dir / self.settings_file
 
     def load_settings(self):
+        """
+        Load user settings from a JSON file or use default settings.
+
+        :return: Dictionary containing the settings.
+        """
         user_settings_path = self.get_user_settings_path()
 
         try:
@@ -106,6 +118,9 @@ class App:
         return defaults
 
     def save_settings(self):
+        """
+        Save user settings to a JSON file.
+        """
         user_settings_path = self.get_user_settings_path()
         settings = {"cps": int(self.cps), "start_stop_key": self.start_stop_key.name}
         with user_settings_path.open("w", encoding="utf-8") as f:
@@ -124,6 +139,9 @@ class App:
             sleep(self.click_interval)
 
     def toggle_clicking(self):
+        """
+        Toggle the clicking state on or off.
+        """
         if self.clicking:
             self.clicking = False
             if self.click_thread:
@@ -134,7 +152,16 @@ class App:
             self.click_thread.start()
 
     def setup_hotkey(self):
+        """
+        Set up the hotkey listener for starting and stopping the clicking.
+        """
+
         def on_key_press(key):
+            """
+            Handle the key press event for the hotkey.
+
+            :param key: The key that was pressed.
+            """
             if key == self.start_stop_key:
                 self.toggle_clicking()
 
@@ -142,7 +169,16 @@ class App:
         listener.start()
 
     def change_hotkey(self):
+        """
+        Change the hotkey for starting and stopping the clicking.
+        """
+
         def on_key_press(key):
+            """
+            Handle the key press event for changing the hotkey.
+
+            :param key: The key that was pressed.
+            """
             self.start_stop_key = key
             dpg.configure_item(
                 "hotkey_text", label=f"Current Hotkey: {self.start_stop_key.name}"
@@ -153,6 +189,9 @@ class App:
         listener.start()
 
     def setup_gui(self):
+        """
+        Set up the DearPyGui interface.
+        """
         self.icon_path = self.resource_path(r"assets\PyClickr.ico")
         dpg.create_context()
 
