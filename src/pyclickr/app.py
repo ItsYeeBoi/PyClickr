@@ -43,7 +43,6 @@ class App:
             "Middle": Button.middle,
         }
         self.selected_button = self.button_map.get(button_name, Button.left)
-        print(self.selected_button)
 
         # Window Size
         self.window_width = 400
