@@ -7,13 +7,31 @@ from time import sleep
 
 from dearpygui import dearpygui as dpg
 from pynput import keyboard
-from pynput.keyboard import Key
+from pynput.keyboard import KeyCode
 from pynput.mouse import Button, Controller
 
 try:
     from pyclickr import __author__, __title__, __version__
 except ImportError:
     from . import __author__, __title__, __version__
+
+NUMPAD_MAP = {
+    96: "Numpad0",
+    97: "Numpad1",
+    98: "Numpad2",
+    99: "Numpad3",
+    100: "Numpad4",
+    101: "Numpad5",
+    102: "Numpad6",
+    103: "Numpad7",
+    104: "Numpad8",
+    105: "Numpad9",
+    106: "NumpadMultiply",
+    107: "NumpadAdd",
+    109: "NumpadSubtract",
+    110: "NumpadDecimal",
+    111: "NumpadDivide",
+}
 
 
 class App:
@@ -30,11 +48,8 @@ class App:
         # User Settings
         self.cps = int(self.settings.get("cps", 10))
         self.click_interval = 1.0 / self.cps
-        start_stop_name = self.settings.get("start_stop_key", "f6")
-        try:
-            self.start_stop_key = Key[start_stop_name]
-        except KeyError:
-            self.start_stop_key = start_stop_name
+        start_stop_key = self.settings.get("start_stop_key", "f6")
+        self.start_stop_key = self.key_to_string(start_stop_key)
         self.holding = self.settings.get("hold_mouse_button", False)
         button_name = self.settings.get("selected_button", "Left")
         self.button_map = {
@@ -51,6 +66,23 @@ class App:
         # Setup
         self.setup_hotkey()
         self.setup_gui()
+
+    @staticmethod
+    def key_to_string(key):
+        """
+        Convert a Key or KeyCode to a string representation.
+
+        :param key: The key to convert.
+        :return: String representation of the key.
+        """
+        if isinstance(key, KeyCode):
+            if key.vk in NUMPAD_MAP:
+                return NUMPAD_MAP[key.vk]
+            if key.char is not None:
+                return key.char
+            return str(key.vk)
+        else:
+            return str(key).replace("Key.", "")
 
     @staticmethod
     def resource_path(relative_path):
@@ -116,7 +148,7 @@ class App:
         except FileNotFoundError:
             defaults = {
                 "cps": self.cps,
-                "start_stop_key": self.start_stop_key.name,
+                "start_stop_key": self.start_stop_key,
                 "hold_mouse_button": self.holding,
                 "selected_button": self.selected_button.name,
             }
@@ -133,7 +165,7 @@ class App:
         user_settings_path = self.get_user_settings_path()
         settings = {
             "cps": int(self.cps),
-            "start_stop_key": self.start_stop_key.name,
+            "start_stop_key": self.start_stop_key,
             "hold_mouse_button": dpg.get_value("hold_mouse_button"),
             "selected_button": dpg.get_value("button_listbox"),
         }
@@ -148,12 +180,7 @@ class App:
         :param app_data: The new value or data from the GUI element.
         """
         try:
-            if sender == "hotkey_text":
-                try:
-                    self.start_stop_key = Key[app_data]
-                except KeyError:
-                    self.start_stop_key = app_data
-            elif sender == "cps_slider":
+            if sender == "cps_slider":
                 self.cps = int(app_data)
                 self.click_interval = 1.0 / self.cps
             elif sender == "hold_mouse_button":
@@ -219,7 +246,7 @@ class App:
 
             :param key: The key that was pressed.
             """
-            if key == self.start_stop_key:
+            if self.key_to_string(key) == self.start_stop_key:
                 self.toggle_clicking()
 
         listener = keyboard.Listener(on_press=on_key_press)
@@ -236,15 +263,8 @@ class App:
 
             :param key: The key that was pressed.
             """
-            self.start_stop_key = key
-            try:
-                dpg.configure_item(
-                    "hotkey_text", label=f"Hotkey: {self.start_stop_key.name}"
-                )
-            except Exception:
-                dpg.configure_item(
-                    "hotkey_text", label=f"Hotkey: {self.start_stop_key}"
-                )
+            self.start_stop_key = self.key_to_string(key)
+            dpg.configure_item("hotkey_text", label=f"Hotkey: {self.start_stop_key}")
             listener.stop()
 
         listener = keyboard.Listener(on_press=on_key_press)
@@ -281,7 +301,7 @@ class App:
         ):
             with dpg.group(horizontal=True):
                 dpg.add_button(
-                    label=f"Hotkey: {self.start_stop_key.name}",
+                    label=f"Hotkey: {self.start_stop_key}",
                     tag="hotkey_text",
                 )
                 dpg.bind_item_theme("hotkey_text", "fake_button_theme")
