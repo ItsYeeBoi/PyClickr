@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v0.2.2 (2025-11-16)
+
+### Bug Fixes
+
+- Handle all keys in hotkey selection
+  ([`1ad291d`](https://github.com/ItsYeeBoi/PyClickr/commit/1ad291d59046ac831e984be206982e3b69ab6836))
+
+### Documentation
+
+- Add bug report and feature request templates
+  ([`e601b73`](https://github.com/ItsYeeBoi/PyClickr/commit/e601b73ad87fcef60646f51532856a901d08b2ed))
+
+- **readme**: Build from source hyperlink
+  ([`f084b90`](https://github.com/ItsYeeBoi/PyClickr/commit/f084b909b8c1fb17a29f1615b6f4cdb4674f9344))
+
+
 ## v0.2.1 (2025-11-15)
 
 ### Bug Fixes
