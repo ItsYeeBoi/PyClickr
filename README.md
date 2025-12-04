@@ -95,16 +95,16 @@ This repo is set up for **Conventional Commits** + **semantic-release**:
 - `fix: ...` → **patch** bump
 - `feat!: ...` or a `BREAKING CHANGE:` footer → **major** bump
 
-A GitHub Action parses commit messages on pushes to `main`, bumps the version, tags the commit, publishes a **GitHub Release**, and a separate workflow builds and attaches the Windows `.exe`.
+A GitHub Action parses commit messages on pushes to `main`, bumps the version, tags the commit, publishes a **GitHub Release**, and attaches the Windows `.exe`.
 
 - Release workflow: `.github/workflows/release.yml`
-- Binary build workflow: `.github/workflows/build-binaries.yml`
 
 ---
 
 ## Roadmap (ideas)
 
 - Click at fixed coordinates / cursor position toggle
+- Click limit (number of clicks)
 - GUI themes (light/dark)
 - Per-OS packaging (macOS app bundle, Linux AppImage)
 
